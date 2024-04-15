@@ -1,0 +1,168 @@
+slip no 1
+Q 1. Write a C program that accepts the vertices and edges of a graph and stores it as an 
+adjacency matrix. Display the adjacency matrix. 
+
+#include <stdio.h>
+#define MAX_VERTICES 100
+int adjacencyMatrix[MAX_VERTICES][MAX_VERTICES];
+void addEdge(int u, int v) {
+    adjacencyMatrix[u][v] = 1;
+    adjacencyMatrix[v][u] = 1;
+}
+void displayAdjacencyMatrix(int vertices) {
+    int i, j;
+    printf("\nAdjacency Matrix:\n");
+    for (i = 0; i < vertices; i++) {
+        for (j = 0; j < vertices; j++) {
+            printf("%d ", adjacencyMatrix[i][j]);
+        }
+        printf("\n");
+    }
+}
+int main() {
+    int vertices, edges, i, u, v;
+    printf("Enter the number of vertices: ");
+    scanf("%d", &vertices);
+    printf("Enter the number of edges: ");
+    scanf("%d", &edges);
+    for (i = 0; i < vertices; i++) {
+        for (int j = 0; j < vertices; j++) {
+            adjacencyMatrix[i][j] = 0;
+        }
+    }
+    printf("Enter the edges (u v):\n");
+    for (i = 0; i < edges; i++) {
+        scanf("%d %d", &u, &v);
+        addEdge(u, v);
+    }
+displayAdjacencyMatrix(vertices);
+    return 0;
+}
+
+
+Q 2. Implement a Binary search tree (BST) library (btree.h) with operations – create, insert, 
+preorder. Write a menu driven program that performs the above operations.
+
+#ifndef BTREE_H
+#define BTREE_H
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+struct Node* newNode(int data) {
+    struct Node* node = (struct Node*)malloc(sizeof(struct Node));
+    node->data = data;
+    node->left = NULL;
+    node->right = NULL;
+    return node;
+}
+struct Node* insert(struct Node* root, int data) {
+    if (root == NULL) {
+        return newNode(data);
+    }
+    if (data < root->data) {
+        root->left = insert(root->left, data);
+    } else {
+        root->right = insert(root->right, data);
+    }
+    return root;
+}
+void preorder(struct Node* root) {
+    if (root != NULL) {
+        printf("%d ", root->data);
+        preorder(root->left);
+        preorder(root->right);
+    }
+}
+
+#endif
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "btree.h"
+int main() {
+    struct Node* root = NULL;
+    int choice, data;
+    do {
+        printf("\nBinary Search Tree Operations:\n");
+        printf("1. Insert a node\n");
+        printf("2. Preorder Traversal\n");
+        printf("3. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1:
+                printf("Enter the data to be inserted: ");
+                scanf("%d", &data);
+                root = insert(root, data);
+                printf("Node with data %d inserted.\n", data);
+                break;
+            case 2:
+                printf("Preorder traversal: ");
+                preorder(root);
+                printf("\n");
+                break;
+            case 3:
+                printf("Exiting...\n");
+                exit(0);
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    } while (choice != 3);
+
+    return 0;
+}
+
+
+
+or
+Q 2. Write a C program for the Implementation of Prim’s Minimum spanning tree algorithm
+
+
+#include <stdio.h>
+#include <limits.h>
+#define V 5 
+int minKey(int key[], bool mstSet[]) {
+    int min = INT_MAX, min_index; 
+    for (int v = 0; v < V; v++)
+        if (mstSet[v] == false && key[v] < min)
+            min = key[v], min_index = v;
+    return min_index;
+}
+void printMST(int parent[], int graph[V][V]) {
+    printf("Edge \tWeight\n");
+    for (int i = 1; i < V; i++)
+        printf("%d - %d \t%d \n", parent[i], i, graph[i][parent[i]]);
+}
+void primMST(int graph[V][V]) {
+    int parent[V];
+    int key[V];
+    bool mstSet[V];
+    for (int i = 0; i < V; i++)
+        key[i] = INT_MAX, mstSet[i] = false;
+    key[0] = 0;
+    parent[0] = -1;
+    for (int count = 0; count < V - 1; count++) {
+        int u = minKey(key, mstSet);
+        mstSet[u] = true;
+        for (int v = 0; v < V; v++)
+            if (graph[u][v] && mstSet[v] == false && graph[u][v] < key[v])
+                parent[v] = u, key[v] = graph[u][v];
+    }
+    printMST(parent, graph);
+}
+int main() {
+    int graph[V][V] = {
+        {0, 2, 0, 6, 0},
+        {2, 0, 3, 8, 5},
+        {0, 3, 0, 0, 7},
+        {6, 8, 0, 0, 9},
+        {0, 5, 7, 9, 0}
+    };
+    primMST(graph);
+    return 0;
+}
+
+
+
