@@ -1,0 +1,140 @@
+slip no:-25
+Q 1. Write a C program for the implementation of Floyd Warshall’s algorithm for finding all pairs
+shortest path using adjacency cost matrix. 
+#include <stdio.h>
+
+#define MAX_VERTICES 100
+#define INF 999999
+
+void floyd_warshall(int graph[MAX_VERTICES][MAX_VERTICES], int num_vertices) {
+    int dist[MAX_VERTICES][MAX_VERTICES], i, j, k;
+
+   
+    for (i = 0; i < num_vertices; i++) {
+        for (j = 0; j < num_vertices; j++) {
+            dist[i][j] = graph[i][j];
+        }
+    }
+
+   
+    for (k = 0; k < num_vertices; k++) {
+        for (i = 0; i < num_vertices; i++) {
+            for (j = 0; j < num_vertices; j++) {
+                if (dist[i][k] + dist[k][j] < dist[i][j]) {
+                    dist[i][j] = dist[i][k] + dist[k][j];
+                }
+            }
+        }
+    }
+
+    
+    printf("Shortest distances between every pair of vertices:\n");
+    for (i = 0; i < num_vertices; i++) {
+        for (j = 0; j < num_vertices; j++) {
+            if (dist[i][j] == INF) {
+                printf("INF ");
+            } else {
+                printf("%d ", dist[i][j]);
+            }
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    int graph[MAX_VERTICES][MAX_VERTICES], num_vertices, i, j;
+
+   
+    printf("Enter the number of vertices in the graph: ");
+    scanf("%d", &num_vertices);
+
+    
+    printf("Enter the adjacency matrix (Enter INF for no edge):\n");
+    for (i = 0; i < num_vertices; i++) {
+        for (j = 0; j < num_vertices; j++) {
+            scanf("%d", &graph[i][j]);
+            if (graph[i][j] == -1) {
+                graph[i][j] = INF;
+            }
+        }
+    }
+
+    floyd_warshall(graph, num_vertices);
+
+    return 0;
+}
+output:-
+Enter the number of vertices in the graph: 4
+Enter the adjacency matrix (Enter INF for no edge):
+0 5 INF 10
+INF 0 3 INF
+INF INF 0 1
+INF INF INF 0
+Shortest distances between every pair of vertices:
+0 5 8 9 
+INF 0 3 4 
+INF INF 0 1 
+INF INF INF 0 
+
+Q2. Write a program to sort n randomly generated elements using Heapsort method. 
+#include <stdio.h>
+#include <stdlib.h>
+
+void heapify(int arr[], int n, int i) {
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+
+    if (left < n && arr[left] > arr[largest])
+        largest = left;
+
+    if (right < n && arr[right] > arr[largest])
+        largest = right;
+
+    if (largest != i) {
+        int temp = arr[i];
+        arr[i] = arr[largest];
+        arr[largest] = temp;
+        heapify(arr, n, largest);
+    }
+}
+
+void heap_sort(int arr[], int n) {
+    int i;
+    for (i = n / 2 - 1; i >= 0; i--)
+        heapify(arr, n, i);
+
+    for (i = n - 1; i >= 0; i--) {
+        int temp = arr[0];
+        arr[0] = arr[i];
+        arr[i] = temp;
+        heapify(arr, i, 0);
+    }
+}
+
+int main() {
+    int n, i;
+    printf("Enter the number of elements to be sorted: ");
+    scanf("%d", &n);
+
+    int arr[n];
+    printf("Enter %d elements:\n", n);
+    for (i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    heap_sort(arr, n);
+
+    printf("Sorted array:\n");
+    for (i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+
+    return 0;
+}
+output:-
+Enter the number of elements to be sorted: 6
+Enter 6 elements:
+9 7 5 3 1 2
+Sorted array:
+1 2 3 5 7 9
