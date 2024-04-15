@@ -1,0 +1,145 @@
+slip no:20
+Q 1. Write a C program for the Implementation of Kruskal’s Minimum spanning tree algorithm.
+
+#include<stdio.h>
+#include<stdlib.h>
+
+// Structure for Edge
+struct Edge {
+    int src, dest, weight;
+};
+
+// Structure for Graph
+struct Graph {
+    int V, E;
+    struct Edge* edge;
+};
+
+// Create Graph
+struct Graph* createGraph(int V, int E) {
+    struct Graph* graph = (struct Graph*) malloc(sizeof(struct Graph));
+    graph->V = V;
+    graph->E = E;
+    graph->edge = (struct Edge*) malloc(sizeof(struct Edge) * E);
+    return graph;
+}
+
+// Find parent of i using parent array
+int find(int parent[], int i) {
+    if(parent[i] == -1)
+        return i;
+    return find(parent, parent[i]);
+}
+
+// Union of two subsets using Union by rank
+void Union(int parent[], int x, int y) {
+    int xset = find(parent, x);
+    int yset = find(parent, y);
+    parent[xset] = yset;
+}
+
+// Compare two edges based on weight
+int compare(const void* a, const void* b) {
+    struct Edge* a1 = (struct Edge*) a;
+    struct Edge* b1 = (struct Edge*) b;
+    return a1->weight - b1->weight;
+}
+
+// Implement Kruskal's Minimum Spanning Tree Algorithm
+void KruskalMST(struct Graph* graph) {
+    int V = graph->V;
+    struct Edge result[V];
+    int e = 0;
+    int i = 0;
+    qsort(graph->edge, graph->E, sizeof(graph->edge[0]), compare);
+    int parent[V];
+    memset(parent, -1, sizeof(parent));
+    while(e < V-1 && i < graph->E) {
+        struct Edge next_edge = graph->edge[i++];
+        int x = find(parent, next_edge.src);
+        int y = find(parent, next_edge.dest);
+        if(x != y) {
+            result[e++] = next_edge;
+            Union(parent, x, y);
+        }
+    }
+    printf("Edges in the minimum spanning tree:\n");
+    for(i = 0; i < e; ++i)
+        printf("%d -- %d == %d\n", result[i].src, result[i].dest, result[i].weight);
+    return;
+}
+
+// Main function
+int main() {
+    int V, E, i;
+    printf("Enter number of vertices and edges: ");
+    scanf("%d%d", &V, &E);
+    struct Graph* graph = createGraph(V, E);
+    printf("Enter edges:\n");
+    for(i = 0; i < E; ++i)
+        scanf("%d%d%d", &graph->edge[i].src, &graph->edge[i].dest, &graph->edge[i].weight);
+    KruskalMST(graph);
+    return 0;
+}
+
+OR
+Q 2. Write a C program that accepts the vertices and edges of a graph and store it as an
+adjacencymatrix. Implement function to traverse the graph using Breadth First Search (BFS)
+traversal.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_SIZE 100
+
+int adj_matrix[MAX_SIZE][MAX_SIZE];
+int visited[MAX_SIZE];
+int queue[MAX_SIZE];
+int front = -1;
+int rear = -1;
+
+void bfs(int start, int num_vertices) {
+    int i, current;
+    visited[start] = 1;
+    queue[++rear] = start;
+    while (front != rear) {
+        current = queue[++front];
+        printf("%d ", current);
+        for (i = 0; i < num_vertices; i++) {
+            if (adj_matrix[current][i] && !visited[i]) {
+                visited[i] = 1;
+                queue[++rear] = i;
+            }
+        }
+    }
+}
+
+int main() {
+    int num_vertices, num_edges, i, j, vertex1, vertex2;
+    printf("Enter the number of vertices: ");
+    scanf("%d", &num_vertices);
+    printf("Enter the number of edges: ");
+    scanf("%d", &num_edges);
+    for (i = 0; i < num_vertices; i++) {
+        for (j = 0; j < num_vertices; j++) {
+            adj_matrix[i][j] = 0;
+        }
+    }
+    printf("Enter the vertices of the edges: \n");
+    for (i = 0; i < num_edges; i++) {
+        printf("Enter edge %d: ", i+1);
+        scanf("%d %d", &vertex1, &vertex2);
+        adj_matrix[vertex1][vertex2] = 1;
+        adj_matrix[vertex2][vertex1] = 1;
+    }
+    printf("The adjacency matrix is:\n");
+    for (i = 0; i < num_vertices; i++) {
+        for (j = 0; j < num_vertices; j++) {
+            printf("%d ", adj_matrix[i][j]);
+        }
+        printf("\n");
+    }
+    printf("BFS traversal: ");
+    bfs(0, num_vertices);
+    return 0;
+}
