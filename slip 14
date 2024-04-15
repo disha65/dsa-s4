@@ -1,0 +1,150 @@
+slip no:-14
+Q 1. Write a C program for the implementation of Floyd Warshall’s algorithm for finding all pairs
+shortest path using adjacency cost matrix.
+
+#include <stdio.h>
+
+#define INF 99999
+#define MAX_VERTICES 100
+
+void floydWarshall(int adjMatrix[MAX_VERTICES][MAX_VERTICES], int numVertices) {
+    int i, j, k;
+
+    for (k = 0; k < numVertices; k++) {
+        for (i = 0; i < numVertices; i++) {
+            for (j = 0; j < numVertices; j++) {
+                if (adjMatrix[i][k] + adjMatrix[k][j] < adjMatrix[i][j]) {
+                    adjMatrix[i][j] = adjMatrix[i][k] + adjMatrix[k][j];
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    int adjMatrix[MAX_VERTICES][MAX_VERTICES];
+    int numVertices, i, j;
+
+    printf("Enter the number of vertices: ");
+    scanf("%d", &numVertices);
+
+    printf("Enter the adjacency matrix (enter %d for infinity):\n", INF);
+    for (i = 0; i < numVertices; i++) {
+        for (j = 0; j < numVertices; j++) {
+            scanf("%d", &adjMatrix[i][j]);
+            if (adjMatrix[i][j] == INF) {
+                adjMatrix[i][j] = INF / 2;
+            }
+        }
+    }
+
+    floydWarshall(adjMatrix, numVertices);
+
+    printf("All Pairs Shortest Paths:\n");
+    for (i = 0; i < numVertices; i++) {
+        for (j = 0; j < numVertices; j++) {
+            if (adjMatrix[i][j] == INF / 2) {
+                printf("%7s", "INF");
+            } else {
+                printf("%7d", adjMatrix[i][j]);
+            }
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
+
+OR
+
+Q 2. Write a C program which uses Binary search tree library and displays nodes at each level,
+and total levels in the tree.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+// Binary Search Tree node structure
+struct node {
+    int data;
+    struct node* left;
+    struct node* right;
+};
+
+// Create a new node
+struct node* createNode(int data) {
+    struct node* newNode = (struct node*)malloc(sizeof(struct node));
+    newNode->data = data;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+
+// Insert a node in the Binary Search Tree
+struct node* insert(struct node* root, int data) {
+    if (root == NULL) {
+        return createNode(data);
+    } else if (data <= root->data) {
+        root->left = insert(root->left, data);
+    } else {
+        root->right = insert(root->right, data);
+    }
+    return root;
+}
+
+// Calculate the height of a Binary Search Tree
+int height(struct node* root) {
+    if (root == NULL) {
+        return 0;
+    } else {
+        int leftHeight = height(root->left);
+        int rightHeight = height(root->right);
+        return (leftHeight > rightHeight) ? (leftHeight + 1) : (rightHeight + 1);
+    }
+}
+
+// Print the nodes at a given level of a Binary Search Tree
+void printLevel(struct node* root, int level) {
+    if (root == NULL) {
+        return;
+    }
+    if (level == 1) {
+        printf("%d ", root->data);
+    } else if (level > 1) {
+        printLevel(root->left, level - 1);
+        printLevel(root->right, level - 1);
+    }
+}
+
+// Print the nodes at each level of a Binary Search Tree
+void printLevelOrder(struct node* root) {
+    int h = height(root);
+    int i;
+    for (i = 1; i <= h; i++) {
+        printf("Level %d: ", i);
+        printLevel(root, i);
+        printf("\n");
+    }
+}
+
+// Driver function
+int main() {
+    struct node* root = NULL;
+    root = insert(root, 50);
+    insert(root, 30);
+    insert(root, 20);
+    insert(root, 40);
+    insert(root, 70);
+    insert(root, 60);
+    insert(root, 80);
+
+    printf("Nodes at each level:\n");
+    printLevelOrder(root);
+
+    printf("Total levels: %d\n", height(root));
+
+    return 0;
+}
+ 
+
+
