@@ -1,0 +1,166 @@
+slip no:-17
+Q1. Write a menu driven program to implement hash table using array (insert, delete,display).
+Use any of the above-mentioned hash functions. In case of collision apply linear probing.
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_SIZE 10
+
+// Hash function
+int hash(int key) {
+    return key % MAX_SIZE;
+}
+
+// Function to insert an element into the hash table
+void insert(int hash_table[], int key) {
+    int index = hash(key);
+    int i = 0;
+
+    // Linear probing collision resolution method
+    while (hash_table[(index + i) % MAX_SIZE] != -1) {
+        i++;
+    }
+
+    hash_table[(index + i) % MAX_SIZE] = key;
+    printf("Element %d inserted at index %d\n", key, (index + i) % MAX_SIZE);
+}
+
+// Function to delete an element from the hash table
+void delete(int hash_table[], int key) {
+    int index = hash(key);
+    int i = 0;
+
+    // Linear probing collision resolution method
+    while (hash_table[(index + i) % MAX_SIZE] != key) {
+        if (hash_table[(index + i) % MAX_SIZE] == -1) {
+            printf("Element not found\n");
+            return;
+        }
+        i++;
+    }
+
+    hash_table[(index + i) % MAX_SIZE] = -1;
+    printf("Element %d deleted from index %d\n", key, (index + i) % MAX_SIZE);
+}
+
+// Function to display the contents of the hash table
+void display(int hash_table[]) {
+    printf("Hash Table:\n");
+    for (int i = 0; i < MAX_SIZE; i++) {
+        printf("[%d]: %d\n", i, hash_table[i]);
+    }
+}
+
+int main() {
+    int hash_table[MAX_SIZE];
+    for (int i = 0; i < MAX_SIZE; i++) {
+        hash_table[i] = -1; // Initialize all elements to -1
+    }
+
+    int choice, key;
+    do {
+        printf("\n1. Insert element\n");
+        printf("2. Delete element\n");
+        printf("3. Display hash table\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter the element to be inserted: ");
+                scanf("%d", &key);
+                insert(hash_table, key);
+                break;
+            case 2:
+                printf("Enter the element to be deleted: ");
+                scanf("%d", &key);
+                delete(hash_table, key);
+                break;
+            case 3:
+                display(hash_table);
+                break;
+            case 4:
+                printf("Exiting program...\n");
+                break;
+            default:
+                printf("Invalid choice\n");
+        }
+    } while (choice != 4);
+
+    return 0;
+}
+
+Q2. Write a program to sort n randomly generated elements using Heapsort method. 
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define MAX_SIZE 100
+
+// Heapify the subtree rooted at index i
+void heapify(int arr[], int n, int i) {
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+
+    if (left < n && arr[left] > arr[largest]) {
+        largest = left;
+    }
+
+    if (right < n && arr[right] > arr[largest]) {
+        largest = right;
+    }
+
+    if (largest != i) {
+        int temp = arr[i];
+        arr[i] = arr[largest];
+        arr[largest] = temp;
+
+        heapify(arr, n, largest);
+    }
+}
+
+// Heapsort algorithm
+void heapsort(int arr[], int n) {
+    // Build max heap
+    for (int i = n / 2 - 1; i >= 0; i--) {
+        heapify(arr, n, i);
+    }
+
+    // Extract elements one by one and place them in their correct position
+    for (int i = n - 1; i > 0; i--) {
+        int temp = arr[0];
+        arr[0] = arr[i];
+        arr[i] = temp;
+
+        heapify(arr, i, 0);
+    }
+}
+
+int main() {
+    int arr[MAX_SIZE];
+    int n;
+
+    srand(time(NULL)); // Seed the random number generator
+
+    printf("Enter the number of elements to be sorted (maximum %d): ", MAX_SIZE);
+    scanf("%d", &n);
+
+    printf("Randomly generated array:\n");
+    for (int i = 0; i < n; i++) {
+        arr[i] = rand() % 100; // Generate random integers between 0 and 99
+        printf("%d ", arr[i]);
+    }
+
+    heapsort(arr, n);
+
+    printf("\nSorted array:\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
