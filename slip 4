@@ -1,0 +1,234 @@
+Q 1. Write a C program that accepts the vertices and edges of a graph. Create adjacency list
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+  int vertex;
+  struct node* next;
+};
+struct node* createNode(int);
+
+struct Graph {
+  int numVertices;
+  struct node** adjLists;
+};
+
+// Create a node
+struct node* createNode(int v) {
+  struct node* newNode = malloc(sizeof(struct node));
+  newNode->vertex = v;
+  newNode->next = NULL;
+  return newNode;
+}
+
+// Create a graph
+struct Graph* createAGraph(int vertices) {
+  struct Graph* graph = malloc(sizeof(struct Graph));
+  graph->numVertices = vertices;
+
+  graph->adjLists = malloc(vertices * sizeof(struct node*));
+
+  int i;
+  for (i = 0; i < vertices; i++)
+    graph->adjLists[i] = NULL;
+
+  return graph;
+}
+
+// Add edge
+void addEdge(struct Graph* graph, int s, int d) {
+  // Add edge from s to d
+  struct node* newNode = createNode(d);
+  newNode->next = graph->adjLists[s];
+  graph->adjLists[s] = newNode;
+
+  // Add edge from d to s
+  newNode = createNode(s);
+  newNode->next = graph->adjLists[d];
+  graph->adjLists[d] = newNode;
+}
+
+// Print the graph
+void printGraph(struct Graph* graph) {
+  int v;
+  for (v = 0; v < graph->numVertices; v++) {
+    struct node* temp = graph->adjLists[v];
+    printf("\n Vertex %d\n: ", v);
+    while (temp) {
+      printf("%d -> ", temp->vertex);
+      temp = temp->next;
+    }
+    printf("\n");
+  }
+}
+
+int main() {
+  struct Graph* graph = createAGraph(4);
+  addEdge(graph, 0, 1);
+  addEdge(graph, 0, 2);
+  addEdge(graph, 0, 3);
+  addEdge(graph, 1, 2);
+
+  printGraph(graph);
+
+  return 0;
+}
+Btree.c
+Q 2. Write a program which uses binary search tree library and counts the total nodes and
+totalleaf nodes in the tree.
+int countLeaf(T) – returns the total number of leaf nodes from BST.
+
+#include<stdio.h>
+#include<stdlib.h>
+#include "btree.h"
+int main()
+{
+    int ch,n,i,value,cnt;
+    struct bst *newnode,*root,*temp;
+    root=NULL;
+    while(1)
+    {
+        printf("\n---Binary Search Tree---\n");
+        printf("1.Insert\n");
+        printf("2.Search\n");
+        printf("3.Count Total Nodes\n");
+        printf("4.Count Leaf Nodes\n");
+        printf("5.Count Non Leaf Nodes\n");
+        printf("6.Exit\n");
+        printf("Enter your choice:");
+        scanf("%d",&ch);
+        switch(ch)
+        {
+                    case 1:     printf("\nHow many nodes to create:");
+                        scanf("%d",&n);
+                        for(i=0;i<n;i++)
+                    {
+                        newnode=create();
+                        printf("\nEnter the node data:");
+                        scanf("%d",&newnode->data);
+                        if(root==NULL)
+                            root=newnode;
+else
+                            insert(root,newnode);
+                    }
+                    break;
+            case 2:     printf("\nEnter the node value to be searched:");
+                    scanf("%d",&value);
+                    temp=search(root,value);
+                    if(temp==NULL)
+                        printf("\nNode Not Found\n");
+                    else
+                        printf("\nNode Found\n");
+                    break;
+            case 3: cnt=count(root);
+                    printf("\nTotal Nodes=%d\n",cnt);
+                    break;
+            case 4: cnt=countleaf(root);
+                    printf("\nTotal Leaf Nodes=%d\n",cnt);
+                    break;
+            case 5: cnt=countnleaf(root);
+                    printf("\nTotal Non Leaf Nodes=%d\n",cnt);
+                    break;
+            case 6: exit(0);
+            default: printf("\nInvalid Choice\n");
+        }//switch
+    }//while
+}//main
+
+Btree.h
+#include<stdio.h>
+#include<stdlib.h>
+ 
+struct bst
+{
+    int data;
+    struct bst *lchild,*rchild;
+}node;
+ 
+int cnt=0,leafcnt=0,nleafcnt=0;
+//creating a new node
+struct bst *create()
+{
+    struct bst *temp=(struct bst*)malloc(sizeof(struct bst));
+    temp->lchild=NULL;
+    temp->rchild=NULL;
+    return temp;
+}
+ 
+//inserting a above created node at proper position
+void insert(struct bst *r, struct bst *new1)
+{
+    //if new node is less than parent node
+    if(new1->data < r->data)
+    {
+        if(r->lchild==NULL)
+            r->lchild=new1;
+        else
+            insert(r->lchild,new1);
+    }
+    //if new node is greater than parent node
+    if(new1->data > r->data)
+    {
+        if(r->rchild==NULL)
+            r->rchild=new1;
+        else
+            insert(r->rchild,new1);
+    }
+}
+ 
+//to search an element in Binary Search Tree
+struct bst *search(struct bst *r, int key)
+{
+    struct bst *temp;
+    temp=r;
+    while(temp!=NULL)
+    {
+        if(temp->data==key)
+            return temp;
+        if(key < temp->data)
+            temp=temp->lchild;
+        else
+            temp=temp->rchild;
+    }
+    return NULL;
+}
+ 
+//to count total number of nodes
+int count(struct bst *temp)
+{
+    if(temp!=NULL)
+    {
+        cnt++;
+        count(temp->lchild);
+        count(temp->rchild);
+    }
+    return cnt;
+}
+ 
+//to count total number of leaf nodes
+int countleaf(struct bst *temp)
+{
+    if(temp!=NULL)
+    {
+        if(temp->lchild==NULL && temp->rchild==NULL)
+            leafcnt++;
+        countleaf(temp->lchild);
+        countleaf(temp->rchild);
+    }
+    return leafcnt;
+}
+ 
+//to count total number of non leaf nodes
+int countnleaf(struct bst *temp)
+{
+    if(temp!=NULL)
+    {
+        if(temp->lchild!=NULL || temp->rchild!=NULL)
+            nleafcnt++;
+        countnleaf(temp->lchild);
+        countnleaf(temp->rchild);
+    }
+    return nleafcnt;
+}
+
