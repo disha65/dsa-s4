@@ -5,10 +5,8 @@ shortest path using adjacency cost matrix.
 
 #include <stdio.h>
 #include <limits.h>
-
-#define V 4 // Number of vertices in the graph
-#define INF INT_MAX // Used for representing infinity
-
+#define V 4 
+#define INF INT_MAX 
 void printSolution(int dist[][V]) {
     printf("The following matrix shows the shortest distances between every pair of vertices:\n");
     for (int i = 0; i < V; i++) {
@@ -21,16 +19,13 @@ void printSolution(int dist[][V]) {
         printf("\n");
     }
 }
-
 void floydWarshall(int graph[][V]) {
     int dist[V][V];
-
     for (int i = 0; i < V; i++) {
         for (int j = 0; j < V; j++) {
             dist[i][j] = graph[i][j];
         }
     }
-
     for (int k = 0; k < V; k++) {
         for (int i = 0; i < V; i++) {
             for (int j = 0; j < V; j++) {
@@ -39,10 +34,8 @@ void floydWarshall(int graph[][V]) {
             }
         }
     }
-
     printSolution(dist);
 }
-
 int main() {
     int graph[V][V] = {{0, 5, INF, 10},
                        {INF, 0, 3, INF},
@@ -51,60 +44,57 @@ int main() {
     floydWarshall(graph);
     return 0;
 }
-output:-
 
+
+output:-
 The following matrix shows the shortest distances between every pair of vertices:
       0      5      8      9
     INF      0      3      4
     INF    INF      0      1
     INF    INF    INF      0
 
+
+
+
+
+
+
 Q 2. Write a C program that accepts the vertices and edges of a graph. Create adjacency list
 anddisplay the adjacency list.
 
 #include <stdio.h>
 #include <stdlib.h>
-
 struct node {
     int vertex;
     struct node* next;
 };
-
 struct Graph {
     int numVertices;
     struct node** adjLists;
 };
-
 struct node* createNode(int v) {
     struct node* newNode = (struct node*) malloc(sizeof(struct node));
     newNode->vertex = v;
     newNode->next = NULL;
     return newNode;
 }
-
 struct Graph* createGraph(int vertices) {
     struct Graph* graph = (struct Graph*) malloc(sizeof(struct Graph));
     graph->numVertices = vertices;
-
     graph->adjLists = (struct node**) malloc(vertices * sizeof(struct node*));
-
     for (int i = 0; i < vertices; i++) {
         graph->adjLists[i] = NULL;
     }
-
     return graph;
 }
-
 void addEdge(struct Graph* graph, int src, int dest) {
     struct node* newNode = createNode(dest);
     newNode->next = graph->adjLists[src];
     graph->adjLists[src] = newNode;
-
     newNode = createNode(src);
     newNode->next = graph->adjLists[dest];
     graph->adjLists[dest] = newNode;
 }
-
 void printGraph(struct Graph* graph) {
     printf("The adjacency list of the graph is:\n");
     for (int i = 0; i < graph->numVertices; i++) {
@@ -117,26 +107,27 @@ void printGraph(struct Graph* graph) {
         printf("NULL\n");
     }
 }
-
 int main() {
     int V, E, src, dest;
     printf("Enter the number of vertices: ");
     scanf("%d", &V);
     printf("Enter the number of edges: ");
     scanf("%d", &E);
-
     struct Graph* graph = createGraph(V);
-
     printf("Enter the edges (source, destination):\n");
     for (int i = 0; i < E; i++) {
         scanf("%d %d", &src, &dest);
         addEdge(graph, src, dest);
     }
-
     printGraph(graph);
-
     return 0;
 }
+
+
+
+
+
+
 
 output:-
 Enter the number of vertices: 4
@@ -148,6 +139,8 @@ Enter the edges (source, destination):
 2 3
 The adjacency list of the graph is:
 Vertex 0: 2 -> 1 -> NULL
+
+
 Vertex 1: 2 -> 0 -> NULL
 Vertex 2: 3 -> 1 -> 0 -> NULL
 Vertex 3: 2 -> NULL
