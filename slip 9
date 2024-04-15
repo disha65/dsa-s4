@@ -1,0 +1,192 @@
+slip no-:9
+Q 1. Write a C program that accepts the vertices and edges of a graph. Create adjacency list
+and display the adjacency list.
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_VERTICES 100
+
+// structure to represent a node in the adjacency list
+typedef struct AdjListNode {
+    int dest;
+    struct AdjListNode* next;
+} AdjListNode;
+
+// structure to represent the adjacency list
+typedef struct {
+    AdjListNode* head;
+} AdjList;
+
+// structure to represent a graph
+typedef struct {
+    AdjList* array;
+    int num_vertices;
+} Graph;
+
+// function to create a new node for the adjacency list
+AdjListNode* newAdjListNode(int dest) {
+    AdjListNode* newNode = (AdjListNode*) malloc(sizeof(AdjListNode));
+    newNode->dest = dest;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// function to create a new graph with n vertices
+Graph createGraph(int n) {
+    Graph g;
+    g.num_vertices = n;
+    g.array = (AdjList*) malloc(n * sizeof(AdjList));
+    for (int i = 0; i < n; i++) {
+        g.array[i].head = NULL;
+    }
+    return g;
+}
+
+// function to add an edge to the graph
+void addEdge(Graph* g, int from, int to) {
+    // add the edge to the adjacency list of the 'from' vertex
+    AdjListNode* newNode = newAdjListNode(to);
+    newNode->next = g->array[from].head;
+    g->array[from].head = newNode;
+}
+
+// function to print the adjacency list of the graph
+void printGraph(Graph g) {
+    printf("Adjacency list:\n");
+    for (int i = 0; i < g.num_vertices; i++) {
+        printf("%d: ", i);
+        AdjListNode* current = g.array[i].head;
+        while (current != NULL) {
+            printf("%d ", current->dest);
+            current = current->next;
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    // create a new graph with 6 vertices
+    Graph g = createGraph(6);
+
+    // add edges to the graph
+    addEdge(&g, 0, 1);
+    addEdge(&g, 0, 3);
+    addEdge(&g, 1, 2);
+    addEdge(&g, 1, 4);
+    addEdge(&g, 2, 5);
+    addEdge(&g, 3, 1);
+    addEdge(&g, 4, 2);
+    addEdge(&g, 4, 3);
+    addEdge(&g, 5, 4);
+
+    // print the adjacency list of the graph
+    printGraph(g);
+
+    return 0;
+}
+Q 2. Implement a Binary search tree (BST) library (btree.h) with operations – create, insert, 
+postorder. Write a menu driven program that performs the above operations.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// binary search tree node
+typedef struct TreeNode {
+    int data;
+    struct TreeNode* left;
+    struct TreeNode* right;
+} TreeNode;
+
+// create a new binary search tree node
+TreeNode* createNode(int data) {
+    TreeNode* node = (TreeNode*) malloc(sizeof(TreeNode));
+    node->data = data;
+    node->left = NULL;
+    node->right = NULL;
+    return node;
+}
+
+// insert a new node into the binary search tree
+TreeNode* insert(TreeNode* root, int data) {
+    if (root == NULL) {
+        return createNode(data);
+    } else if (data < root->data) {
+        root->left = insert(root->left, data);
+    } else if (data > root->data) {
+        root->right = insert(root->right, data);
+    }
+    return root;
+}
+
+// print the binary search tree in postorder
+void postorder(TreeNode* root) {
+    if (root != NULL) {
+        postorder(root->left);
+        postorder(root->right);
+        printf("%d ", root->data);
+    }
+}
+
+// create a binary search tree from an array of integers
+TreeNode* createTree(int arr[], int n) {
+    TreeNode* root = NULL;
+    for (int i = 0; i < n; i++) {
+        root = insert(root, arr[i]);
+    }
+    return root;
+}
+
+// display the menu options
+void displayMenu() {
+    printf("\n1. Create a binary search tree\n");
+    printf("2. Insert a node into the binary search tree\n");
+    printf("3. Print the binary search tree in postorder\n");
+    printf("4. Exit\n");
+}
+
+int main() {
+    int choice, data, n, i;
+    TreeNode* root = NULL;
+
+    while (1) {
+        displayMenu();
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter the number of elements: ");
+                scanf("%d", &n);
+                int arr[n];
+                printf("Enter the elements: ");
+                for (i = 0; i < n; i++) {
+                    scanf("%d", &arr[i]);
+                }
+                root = createTree(arr, n);
+                printf("Binary search tree created successfully\n");
+                break;
+
+            case 2:
+                printf("Enter the data to be inserted: ");
+                scanf("%d", &data);
+                root = insert(root, data);
+                printf("%d inserted into the binary search tree\n", data);
+                break;
+
+            case 3:
+                printf("The binary search tree in postorder: ");
+                postorder(root);
+                printf("\n");
+                break;
+
+            case 4:
+                printf("Exiting the program\n");
+                exit(0);
+
+            default:
+                printf("Invalid choice\n");
+        }
+    }
+
+    return 0;
+}
