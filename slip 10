@@ -4,13 +4,11 @@ inorder. Write a menu driven program that performs the above operations.
 
 #include <stdio.h>
 #include <stdlib.h>
-
 struct node {
     int data;
     struct node* left;
     struct node* right;
 };
-
 struct node* create_node(int data) {
     struct node* new_node = (struct node*)malloc(sizeof(struct node));
     new_node->data = data;
@@ -18,7 +16,6 @@ struct node* create_node(int data) {
     new_node->right = NULL;
     return new_node;
 }
-
 struct node* insert(struct node* root, int data) {
     if (root == NULL) {
         return create_node(data);
@@ -31,7 +28,6 @@ struct node* insert(struct node* root, int data) {
     }
     return root;
 }
-
 void inorder(struct node* root) {
     if (root != NULL) {
         inorder(root->left);
@@ -39,18 +35,15 @@ void inorder(struct node* root) {
         inorder(root->right);
     }
 }
-
 int main() {
     struct node* root = NULL;
     int choice, data;
-
     do {
         printf("\n1. Insert");
         printf("\n2. Inorder Traversal");
         printf("\n3. Exit");
         printf("\nEnter your choice: ");
         scanf("%d", &choice);
-
         switch (choice) {
         case 1:
             printf("\nEnter data to be inserted: ");
@@ -69,28 +62,24 @@ int main() {
             printf("\nInvalid choice. Try again.");
         }
     } while (choice != 3);
-
     return 0;
 }
+
+
 Q 2. Write a C program that accepts the vertices and edges of a graph. Create adjacency list
 and display the adjacency list.
+
 #include <stdio.h>
 #include <stdlib.h>
-
-// Linked list node for storing adjacent vertices and edge weight
 struct ListNode {
     int vertex;
     int weight;
     struct ListNode* next;
 };
-
-// Array of linked list heads for each vertex
 struct Graph {
     int num_vertices;
     struct ListNode** adj_list;
 };
-
-// Function to create a new node in the linked list
 struct ListNode* createNode(int v, int w) {
     struct ListNode* newNode = (struct ListNode*) malloc(sizeof(struct ListNode));
     newNode->vertex = v;
@@ -98,36 +87,22 @@ struct ListNode* createNode(int v, int w) {
     newNode->next = NULL;
     return newNode;
 }
-
-// Function to create a graph with given number of vertices
 struct Graph* createGraph(int vertices) {
     struct Graph* graph = (struct Graph*) malloc(sizeof(struct Graph));
     graph->num_vertices = vertices;
-
-    // Allocate memory for array of linked lists
     graph->adj_list = (struct ListNode**) malloc(vertices * sizeof(struct ListNode*));
-
-    // Initialize each linked list head to NULL
     for (int i = 0; i < vertices; ++i)
         graph->adj_list[i] = NULL;
-
     return graph;
 }
-
-// Function to add an edge to an undirected graph
 void addEdge(struct Graph* graph, int src, int dest, int weight) {
-    // Add edge from source to destination
     struct ListNode* newNode = createNode(dest, weight);
     newNode->next = graph->adj_list[src];
     graph->adj_list[src] = newNode;
-
-    // Add edge from destination to source (for undirected graph)
     newNode = createNode(src, weight);
     newNode->next = graph->adj_list[dest];
     graph->adj_list[dest] = newNode;
 }
-
-// Function to display the adjacency list
 void displayGraph(struct Graph* graph) {
     for (int i = 0; i < graph->num_vertices; ++i) {
         struct ListNode* curr = graph->adj_list[i];
@@ -139,8 +114,6 @@ void displayGraph(struct Graph* graph) {
         printf("\n");
     }
 }
-
-// Driver program to test above functions
 int main() {
     int vertices, edges, src, dest, weight;
     printf("Enter the number of vertices: ");
