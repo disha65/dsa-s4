@@ -3,44 +3,43 @@ Q 1. Write aCprogramthat acceptsthe vertices and edges of a graph and storesit a
 matrix. Display the adjacency matrix
 
 #include <stdio.h>
-
 #define MAX_VERTICES 100
-
-int main() {
-    int adj_matrix[MAX_VERTICES][MAX_VERTICES];
-    int num_vertices, num_edges;
-
-    printf("Enter the number of vertices in the graph: ");
-    scanf("%d", &num_vertices);
-
-    printf("Enter the number of edges in the graph: ");
-    scanf("%d", &num_edges);
-
-    // Initialize adjacency matrix to all zeroes
-    for (int i = 0; i < num_vertices; i++) {
-        for (int j = 0; j < num_vertices; j++) {
-            adj_matrix[i][j] = 0;
-        }
-    }
-
-    // Prompt the user to enter edges and store them in the adjacency matrix
-    for (int i = 0; i < num_edges; i++) {
-        int u, v;
-        printf("Enter edge %d (format: u v): ", i + 1);
-        scanf("%d %d", &u, &v);
-        adj_matrix[u][v] = 1;
-        adj_matrix[v][u] = 1; // Uncomment this line if the graph is undirected
-    }
-
-    // Display the adjacency matrix
-    printf("Adjacency matrix:\n");
-    for (int i = 0; i < num_vertices; i++) {
-        for (int j = 0; j < num_vertices; j++) {
-            printf("%d ", adj_matrix[i][j]);
+int adjacencyMatrix[MAX_VERTICES][MAX_VERTICES];
+void addEdge(int u, int v) 
+{
+    adjacencyMatrix[u][v] = 1;
+    adjacencyMatrix[v][u] = 1;
+}
+void displayAdjacencyMatrix(int vertices)
+ {
+    int i, j;
+    printf("\nAdjacency Matrix:\n");
+    for (i = 0; i < vertices; i++)
+     {
+        for (j = 0; j < vertices; j++) 
+        {
+            printf("%d ", adjacencyMatrix[i][j]);
         }
         printf("\n");
     }
-
+}
+int main() 
+{  int vertices, edges, i, u, v;
+    printf("Enter the number of vertices: ");
+    scanf("%d", &vertices);
+    printf("Enter the number of edges: ");
+    scanf("%d", &edges);
+    for (i = 0; i < vertices; i++)
+     {   for (int j = 0; j < vertices; j++)
+         {      adjacencyMatrix[i][j] = 0;
+        }
+    }
+    printf("Enter the edges (u v):\n");
+    for (i = 0; i < edges; i++) {
+        scanf("%d %d", &u, &v);
+        addEdge(u, v);
+    }
+    displayAdjacencyMatrix(vertices);
     return 0;
 }
 
@@ -54,7 +53,6 @@ Q 2. Write a C program for the Implementation of Prim’s Minimum spanning tree 
 
 int minKey(int key[], int mstSet[]) {
    int min = INT_MAX, min_index;
-   
    for (int v = 0; v < V; v++) {
       if (mstSet[v] == 0 && key[v] < min) {
          min = key[v];
