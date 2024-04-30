@@ -53,17 +53,15 @@ int main()
             break;
 
         case 4:
-                        exit(1);
-
-                 default:
-                        printf("\nWrong choice\n");
-
-                }/*End of switch */
-        }/*End of while */
+                 exit(1);
+                 default;
+                 printf("\nWrong choice\n");
+             }
+        }
 
         return 0;
 
-}/*End of main( )*/
+}
 
 
 struct node *insert(struct node *ptr, int ikey )
@@ -75,9 +73,9 @@ struct node *insert(struct node *ptr, int ikey )
                 ptr->lchild = NULL;
                 ptr->rchild = NULL;
         }
-        else if(ikey < ptr->info) /*Insertion in left subtree*/
+        else if(ikey < ptr->info) 
                 ptr->lchild = insert(ptr->lchild, ikey);
-        else if(ikey > ptr->info) /*Insertion in right subtree */
+        else if(ikey > ptr->in
                 ptr->rchild = insert(ptr->rchild, ikey);
         else
                 printf("\nDuplicate key\n");
@@ -107,237 +105,12 @@ int NodesAtLevel(struct node *ptr, int level)
                 return 0;
         if(level==0)
                 return 1;
-        return NodesAtLevel(ptr->lchild,level-1) + NodesAtLevel(ptr->rchild,level-1);
-}/*End of NodesAtLevel()*/
-OUTPUT : :
-/* C Program to Count Number of Nodes at each level in Binary Tree  */
-
-1.Insert Tree
-2.Display Tree
-3.Number of Nodes
-4.Quit
-
-Enter your choice : 1
-
-Enter the key to be inserted : 7
-
-1.Insert Tree
-2.Display Tree
-3.Number of Nodes
-4.Quit
-
-Enter your choice : 1
-
-Enter the key to be inserted : 5
-
-1.Insert Tree
-2.Display Tree
-3.Number of Nodes
-4.Quit
-
-Enter your choice : 1
-
-Enter the key to be inserted : 6
-
-1.Insert Tree
-2.Display Tree
-3.Number of Nodes
-4.Quit
-
-Enter your choice : 1
-
-Enter the key to be inserted : 4
-
-1.Insert Tree
-2.Display Tree
-3.Number of Nodes
-4.Quit
-
-Enter your choice : 1
-
-Enter the key to be inserted : 2
-
-1.Insert Tree
-2.Display Tree
-3.Number of Nodes
-4.Quit
-
-Enter your choice : 13
-
-Wrong choice
-
-1.Insert Tree
-2.Display Tree
-3.Number of Nodes
-4.Quit
-
-Enter your choice : 11
-
-Wrong choice
-
-1.Insert Tree
-2.Display Tree
-3.Number of Nodes
-4.Quit
-
-Enter your choice : 1
-
-Enter the key to be inserted : 3
-
-1.Insert Tree
-2.Display Tree
-3.Number of Nodes
-4.Quit
-
-Enter your choice : 1
-
-Enter the key to be inserted : 1
-
-1.Insert Tree
-2.Display Tree
-3.Number of Nodes
-4.Quit
-
-Enter your choice : 1
-
-Enter the key to be inserted : 8
-
-1.Insert Tree
-2.Display Tree
-3.Number of Nodes
-4.Quit
-
-Enter your choice : 1
-
-Enter the key to be inserted : 9
-
-1.Insert Tree
-2.Display Tree
-3.Number of Nodes
-4.Quit
-
-Enter your choice : 1
-
-Enter the key to be inserted : 10
-
-1.Insert Tree
-2.Display Tree
-3.Number of Nodes
-4.Quit
-
-Enter your choice : 2
-
-
-            10
-        9
-    8
-7
-        6
-    5
-        4
-                3
-            2
-                1
-
-1.Insert Tree
-2.Display Tree
-3.Number of Nodes
-4.Quit
-
-Enter your choice : 3
-
-Enter any level :: 0
-
-Number of nodes at [ 0 ] Level :: 1
-
-1.Insert Tree
-2.Display Tree
-3.Number of Nodes
-4.Quit
-
-Enter your choice : 3
-
-Enter any level :: 1
-
-Number of nodes at [ 1 ] Level :: 2
-
-1.Insert Tree
-2.Display Tree
-3.Number of Nodes
-4.Quit
-
-Enter your choice : 3
-
-Enter any level :: 2
-
-Number of nodes at [ 2 ] Level :: 3
-
-1.Insert Tree
-2.Display Tree
-3.Number of Nodes
-4.Quit
-
-Enter your choice : 3
-
-Enter any level :: 3
-
-Number of nodes at [ 3 ] Level :: 2
-
-1.Insert Tree
-2.Display Tree
-3.Number of Nodes
-4.Quit
-
-Enter your choice : 3
-
-Enter any level :: 4
-
-Number of nodes at [ 4 ] Level :: 2
-
-1.Insert Tree
-2.Display Tree
-3.Number of Nodes
-4.Quit
-
-Enter your choice : 3
-
-Enter any level :: 5
-
-Number of nodes at [ 5 ] Level :: 0
-
-1.Insert Tree
-2.Display Tree
-3.Number of Nodes
-4.Quit
-
-Enter your choice : 2
-
-
-            10
-        9
-    8
-7
-        6
-    5
-        4
-                3
-            2
-                1
-
-1.Insert Tree
-2.Display Tree
-3.Number of Nodes
-4.Quit
-
-Enter your choice : 4
-
-Process returned 1
+        return NodesAtLevel(ptr->lchild,level-1) + NodesAtLevel(ptr->rchild,level-1)
+}
 
 Q 2. Write a program to sort n randomly generated elements using Heapsort method. 
   
   #include <stdio.h>
-  
-  // Function to swap the the position of two elements
   void swap(int *a, int *b) {
     int temp = *a;
     *a = *b;
@@ -345,8 +118,7 @@ Q 2. Write a program to sort n randomly generated elements using Heapsort method
   }
   
   void heapify(int arr[], int n, int i) {
-    // Find largest among root, left child and right child
-    int largest = i;
+   int largest = i;
     int left = 2 * i + 1;
     int right = 2 * i + 2;
   
@@ -355,37 +127,27 @@ Q 2. Write a program to sort n randomly generated elements using Heapsort method
   
     if (right < n && arr[right] > arr[largest])
       largest = right;
-  
-    // Swap and continue heapifying if root is not largest
     if (largest != i) {
       swap(&arr[i], &arr[largest]);
       heapify(arr, n, largest);
     }
   }
-  
-  // Main function to do heap sort
   void heapSort(int arr[], int n) {
-    // Build max heap
+
     for (int i = n / 2 - 1; i >= 0; i--)
       heapify(arr, n, i);
   
-    // Heap sort
     for (int i = n - 1; i >= 0; i--) {
       swap(&arr[0], &arr[i]);
-  
-      // Heapify root element to get highest element at root again
       heapify(arr, i, 0);
     }
   }
-  
-  // Print an array
+
   void printArray(int arr[], int n) {
     for (int i = 0; i < n; ++i)
       printf("%d ", arr[i]);
     printf("\n");
   }
-  
-  // Driver code
   int main() {
     int arr[] = {1, 12, 9, 5, 6, 10};
     int n = sizeof(arr) / sizeof(arr[0]);
