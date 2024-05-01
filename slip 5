@@ -1,25 +1,19 @@
-Q 1. Write a C program which uses Binary search tree library and displays nodes at each level, count of node at each level. 
+Q 1. Write a C program which uses Binary search tree library and displays nodes at 
+each level, count of node at each level. 
 
 #include<stdio.h>
 #include<stdlib.h>
-
 struct node
-{
-        struct node *lchild;
+{    struct node *lchild;
         int info;
         struct node *rchild;
 };
-
-
 struct node *insert(struct node *ptr, int ikey);
 void display(struct node *ptr,int level);
 int NodesAtLevel(struct node *ptr, int level) ;
-
 int main()
-{
-        struct node *root=NULL,*root1=NULL,*ptr;
-        int choice,k,item,level;
-
+{   struct node *root=NULL,*root1=NULL,*ptr;
+   int choice,k,item,level;
         while(1)
         {
                 printf("\n");
@@ -29,29 +23,25 @@ int main()
                 printf("4.Quit\n");
                 printf("\nEnter your choice : ");
                 scanf("%d",&choice);
-
                 switch(choice)
                 {
 
-                case 1:
+        case 1:
                         printf("\nEnter the key to be inserted : ");
                         scanf("%d",&k);
                         root = insert(root, k);
                         break;
-
         case 2:
             printf("\n");
             display(root,0);
             printf("\n");
             break;
-
         case 3:
             printf("\n");
             printf("Enter any level :: ");
             scanf("%d",&level);
             printf("\nNumber of nodes at [ %d ] Level :: %d\n",level,NodesAtLevel(root,level));
             break;
-
         case 4:
                  exit(1);
                  default;
@@ -60,13 +50,9 @@ int main()
         }
 
         return 0;
-
 }
-
-
 struct node *insert(struct node *ptr, int ikey )
-{
-        if(ptr==NULL)
+{  if(ptr==NULL)
         {
                 ptr = (struct node *) malloc(sizeof(struct node));
                 ptr->info = ikey;
@@ -80,7 +66,7 @@ struct node *insert(struct node *ptr, int ikey )
         else
                 printf("\nDuplicate key\n");
         return(ptr);
-}/*End of insert( )*/
+}
 
 void display(struct node *ptr,int level)
 {
@@ -96,9 +82,7 @@ void display(struct node *ptr,int level)
                 printf("%d", ptr->info);
                 display(ptr->lchild, level+1);
         }
-}/*End of display()*/
-
-
+}
 int NodesAtLevel(struct node *ptr, int level)
 {
         if(ptr==NULL)
@@ -108,52 +92,60 @@ int NodesAtLevel(struct node *ptr, int level)
         return NodesAtLevel(ptr->lchild,level-1) + NodesAtLevel(ptr->rchild,level-1)
 }
 
+
 Q 2. Write a program to sort n randomly generated elements using Heapsort method. 
-  
   #include <stdio.h>
-  void swap(int *a, int *b) {
-    int temp = *a;
-    *a = *b;
-    *b = temp;
-  }
-  
-  void heapify(int arr[], int n, int i) {
-   int largest = i;
+#include <stdlib.h>
+
+void heapify(int arr[], int n, int i) {
+    int largest = i;
     int left = 2 * i + 1;
     int right = 2 * i + 2;
-  
+
     if (left < n && arr[left] > arr[largest])
-      largest = left;
-  
+        largest = left;
+
     if (right < n && arr[right] > arr[largest])
-      largest = right;
+        largest = right;
+
     if (largest != i) {
-      swap(&arr[i], &arr[largest]);
-      heapify(arr, n, largest);
+        int temp = arr[i];
+        arr[i] = arr[largest];
+        arr[largest] = temp;
+        heapify(arr, n, largest);
     }
-  }
-  void heapSort(int arr[], int n) {
+}
 
-    for (int i = n / 2 - 1; i >= 0; i--)
-      heapify(arr, n, i);
-  
-    for (int i = n - 1; i >= 0; i--) {
-      swap(&arr[0], &arr[i]);
-      heapify(arr, i, 0);
+void heap_sort(int arr[], int n) {
+    int i;
+    for (i = n / 2 - 1; i >= 0; i--)
+        heapify(arr, n, i);
+
+    for (i = n - 1; i >= 0; i--) {
+        int temp = arr[0];
+        arr[0] = arr[i];
+        arr[i] = temp;
+        heapify(arr, i, 0);
     }
-  }
+}
 
-  void printArray(int arr[], int n) {
-    for (int i = 0; i < n; ++i)
-      printf("%d ", arr[i]);
-    printf("\n");
-  }
-  int main() {
-    int arr[] = {1, 12, 9, 5, 6, 10};
-    int n = sizeof(arr) / sizeof(arr[0]);
-  
-    heapSort(arr, n);
-  
-    printf("Sorted array is \n");
-    printArray(arr, n);
-  }
+int main() {
+    int n, i;
+    printf("Enter the number of elements to be sorted: ");
+    scanf("%d", &n);
+
+    int arr[n];
+    printf("Enter %d elements:\n", n);
+    for (i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    heap_sort(arr, n);
+
+    printf("Sorted array:\n");
+    for (i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+
+    return 0;
+}
