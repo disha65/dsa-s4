@@ -15,8 +15,6 @@ Node* create_node(int data);
 Node* insert(Node* root, int data);
 void preorder(Node* root);
 
-#endif
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "btree.h"
@@ -89,94 +87,66 @@ int main() {
     return 0;
 }
 
-gcc -c btree.c
-gcc -o menu menu.c btree.o
-./menu
-
 
 Q 2. Write a C program for the implementation of Topological sorting.
 
-#include <stdio.h>
-#include <stdlib.h>
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 100
 
-#define MAX_VERTICES 100
+int adj[MAX][MAX], visited[MAX], sorted[MAX], n, top=-1;
 
-struct Node {
-    int vertex;
-    struct Node* next;
-};
-
-void addEdge(struct Node* adjacencyList[], int src, int dest);
-void topologicalSort(struct Node* adjacencyList[], int vertices);
-void depthFirstSearch(struct Node* adjacencyList[], int vertex, int visited[], int stack[]);
-void printStack(int stack[], int size);
-
-int main() {
-    int vertices, edges, i, src, dest;
-    struct Node* adjacencyList[MAX_VERTICES] = { NULL };
-
-    printf("Enter the number of vertices: ");
-    scanf("%d", &vertices);
-
-    printf("Enter the number of edges: ");
-    scanf("%d", &edges);
-
-    for (i = 0; i < edges; i++) {
-        printf("Enter the source and destination of edge %d: ", i + 1);
-        scanf("%d %d", &src, &dest);
-        addEdge(adjacencyList, src, dest);
+void dfs(int v) 
+{
+    visited[v] = 1;
+    for(int i=0;i<n;i++) 
+    {
+        if(adj[v][i] && !visited[i])
+            dfs(i);
     }
-
-    printf("Topological sort: ");
-    topologicalSort(adjacencyList, vertices);
-
-    return 0;
+    sorted[++top] = v;
 }
 
-void addEdge(struct Node* adjacencyList[], int src, int dest) {
-    struct Node* newNode = (struct Node*) malloc(sizeof(struct Node));
-    newNode->vertex = dest;
-    newNode->next = adjacencyList[src];
-    adjacencyList[src] = newNode;
-}
-
-void topologicalSort(struct Node* adjacencyList[], int vertices) {
-    int visited[MAX_VERTICES], stack[MAX_VERTICES], i;
-
-    for (i = 0; i < vertices; i++) {
+void topological_sort() 
+{
+    for(int i=0;i<n;i++) 
+    {
         visited[i] = 0;
     }
-
-    int index = 0;
-    for (i = 0; i < vertices; i++) {
-        if (!visited[i]) {
-            depthFirstSearch(adjacencyList, i, visited, stack);
-        }
+    for(int i=0;i<n;i++) 
+    {
+        if(!visited[i])
+            dfs(i);
     }
-
-    printStack(stack, vertices);
+    printf("\nTopologically sorted order: ");
+    for(int i=top;i>=0;i--)
+     {
+        printf("%d ", sorted[i]);
+    }
 }
 
-void depthFirstSearch(struct Node* adjacencyList[], int vertex, int visited[], int stack[]) {
-    visited[vertex] = 1;
-
-    struct Node* temp = adjacencyList[vertex];
-    while (temp) {
-        int adjVertex = temp->vertex;
-        if (!visited[adjVertex]) {
-            depthFirstSearch(adjacencyList, adjVertex, visited, stack);
-        }
-        temp = temp->next;
+int main()
+ {
+    int e, origin, dest,i,j;
+    printf("Enter number of vertices: ");
+    scanf("%d", &n);
+    printf("Enter number of edges: ");
+    scanf("%d", &e);
+    for(int i=0;i<e;i++)
+     {
+        printf("Enter origin and destination vertex of edge %d: ", i+1);
+        scanf("%d %d", &origin, &dest);
+        adj[origin][dest] = 1;
     }
-
-    stack[vertex] = 1;
-}
-
-void printStack(int stack[], int size) {
-    int i;
-    for (i = 0; i < size; i++) {
-        if (stack[i]) {
-            printf("%d ", i);
+    printf("Adjacency Matrix:\n");
+    for( i=0;i<n;i++)
+     {
+        for(j=0;j<n;j++)
+         {
+            printf("%d ", adj[i][j]);
         }
+        printf("\n");
     }
+    topological_sort();
+    return 0;
 }
