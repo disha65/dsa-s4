@@ -63,15 +63,11 @@ and total levels in the tree.
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-
-// Binary Search Tree node structure
 struct node {
     int data;
     struct node* left;
     struct node* right;
 };
-
-// Create a new node
 struct node* createNode(int data) {
     struct node* newNode = (struct node*)malloc(sizeof(struct node));
     newNode->data = data;
@@ -79,8 +75,6 @@ struct node* createNode(int data) {
     newNode->right = NULL;
     return newNode;
 }
-
-// Insert a node in the Binary Search Tree
 struct node* insert(struct node* root, int data) {
     if (root == NULL) {
         return createNode(data);
@@ -91,8 +85,6 @@ struct node* insert(struct node* root, int data) {
     }
     return root;
 }
-
-// Calculate the height of a Binary Search Tree
 int height(struct node* root) {
     if (root == NULL) {
         return 0;
@@ -102,8 +94,6 @@ int height(struct node* root) {
         return (leftHeight > rightHeight) ? (leftHeight + 1) : (rightHeight + 1);
     }
 }
-
-// Print the nodes at a given level of a Binary Search Tree
 void printLevel(struct node* root, int level) {
     if (root == NULL) {
         return;
@@ -115,8 +105,6 @@ void printLevel(struct node* root, int level) {
         printLevel(root->right, level - 1);
     }
 }
-
-// Print the nodes at each level of a Binary Search Tree
 void printLevelOrder(struct node* root) {
     int h = height(root);
     int i;
@@ -126,8 +114,6 @@ void printLevelOrder(struct node* root) {
         printf("\n");
     }
 }
-
-// Driver function
 int main() {
     struct node* root = NULL;
     root = insert(root, 50);
@@ -137,14 +123,13 @@ int main() {
     insert(root, 70);
     insert(root, 60);
     insert(root, 80);
-
     printf("Nodes at each level:\n");
     printLevelOrder(root);
-
     printf("Total levels: %d\n", height(root));
-
     return 0;
 }
+
+
  
 
 
