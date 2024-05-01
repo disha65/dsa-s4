@@ -3,59 +3,62 @@ Q 1. Write a program to sort n randomly generated elements using Heapsort method
 
 #include <stdio.h>
 #include <stdlib.h>
-void swap(int *a, int *b) {
-    int temp = *a;
-    *a = *b;
-    *b = temp;
-
 void heapify(int arr[], int n, int i) {
-    int largest = i;    
-    int l = 2 * i + 1;  
-    int r = 2 * i + 2;  
-    if (l < n && arr[l] > arr[largest])
-        largest = l;
-    if (r < n && arr[r] > arr[largest])
-        largest =r
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+
+    if (left < n && arr[left] > arr[largest])
+        largest = left;
+
+    if (right < n && arr[right] > arr[largest])
+        largest = right;
+
     if (largest != i) {
-        swap(&arr[i], &arr[largest]);
+        int temp = arr[i];
+        arr[i] = arr[largest];
+        arr[largest] = temp;
         heapify(arr, n, largest);
     }
 }
-void heapsort(int arr[], int n) {
-    for (int i = n / 2 - 1; i >= 0; i--)
+
+void heap_sort(int arr[], int n) {
+    int i;
+    for (i = n / 2 - 1; i >= 0; i--)
         heapify(arr, n, i);
-    for (int i = n - 1; i > 0; i--) {
-        swap(&arr[0], &arr[i]);
+
+    for (i = n - 1; i >= 0; i--) {
+        int temp = arr[0];
+        arr[0] = arr[i];
+        arr[i] = temp;
         heapify(arr, i, 0);
     }
 }
 
 int main() {
-    int n;
-
-    printf("Enter the number of elements to sort: ");
+    int n, i;
+    printf("Enter the number of elements to be sorted: ");
     scanf("%d", &n);
-    int *arr = (int*)malloc(n * sizeof(int));
-    printf("Generating %d random elements...\n", n);
-    for (int i = 0; i < n; i++)
-        arr[i] = rand() % 100;
-    printf("Original array:\n");
-    for (int i = 0; i < n; i++)
+
+    int arr[n];
+    printf("Enter %d elements:\n", n);
+    for (i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    heap_sort(arr, n);
+    printf("Sorted array:\n");
+    for (i = 0; i < n; i++) {
         printf("%d ", arr[i]);
-    heapsort(arr, n);
-    printf("\nSorted array:\n");
-    for (int i = 0; i < n; i++)
-        printf("%d ", arr[i]);
-    free(arr);
-    return 0;
+    }
 }
+
 
 Q 2. Write a C program for the Implementation of Prim’s Minimum spanning tree algorithm.
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
-
 #define V 5  
 int minKey(int key[], int mstSet[]) {
     int min = INT_MAX, min_index;
@@ -66,17 +69,13 @@ int minKey(int key[], int mstSet[]) {
             min_index = v;
         }
     }
-
     return min_index;
 }
-
 void printMST(int parent[], int graph[V][V]) {
     printf("Edge \tWeight\n");
     for (int i = 1; i < V; i++)
         printf("%d - %d \t%d \n", parent[i], i, graph[i][parent[i]]);
 }
-
-
 void primMST(int graph[V][V]) {
     int parent[V];     
     int key[V];        
@@ -111,21 +110,16 @@ int main() {
 }
 OR
 
-Q 2. Write a C program that accepts the vertices and edges of a graph and store it as an adjacency
-matrix. Implement functions to print indegree of all vertices of graph. 
+Q 2. Write a C program that accepts the vertices and edges of a graph and store it as an 
+adjacency matrix. Implement functions to print indegree of all vertices of graph. 
 
 #include <stdio.h>
 #include <stdlib.h>
-
 #define MAX_VERTICES 100
-
-// structure to represent a graph
 typedef struct {
     int matrix[MAX_VERTICES][MAX_VERTICES];
     int num_vertices;
 } Graph;
-
-// function to create a new graph with n vertices
 Graph createGraph(int n) {
     Graph g;
     g.num_vertices = n;
@@ -136,13 +130,9 @@ Graph createGraph(int n) {
     }
     return g;
 }
-
-// function to add an edge to the graph
 void addEdge(Graph* g, int from, int to) {
     g->matrix[from][to] = 1;
 }
-
-// function to print the adjacency matrix of the graph
 void printGraph(Graph g) {
     printf("Adjacency matrix:\n");
     for (int i = 0; i < g.num_vertices; i++) {
@@ -152,12 +142,8 @@ void printGraph(Graph g) {
         printf("\n");
     }
 }
-
-// function to print the indegree of all vertices in the graph
 void printIndegree(Graph g) {
     int indegree[MAX_VERTICES] = {0};
-
-    // calculate indegree of each vertex
     for (int i = 0; i < g.num_vertices; i++) {
         for (int j = 0; j < g.num_vertices; j++) {
             if (g.matrix[j][i] == 1) {
@@ -165,8 +151,6 @@ void printIndegree(Graph g) {
             }
         }
     }
-
-    // print the indegree of each vertex
     printf("Indegree of vertices:\n");
     for (int i = 0; i < g.num_vertices; i++) {
         printf("%d: %d\n", i, indegree[i]);
@@ -174,10 +158,7 @@ void printIndegree(Graph g) {
 }
 
 int main() {
-    // create a new graph with 6 vertices
     Graph g = createGraph(6);
-
-    // add edges to the graph
     addEdge(&g, 0, 1);
     addEdge(&g, 0, 3);
     addEdge(&g, 1, 2);
@@ -187,8 +168,6 @@ int main() {
     addEdge(&g, 4, 2);
     addEdge(&g, 4, 3);
     addEdge(&g, 5, 4);
-
-    // print the adjacency matrix and indegree of vertices
     printGraph(g);
     printIndegree(g);
 
