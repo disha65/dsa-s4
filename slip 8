@@ -3,49 +3,29 @@ Q 1. Write a program to sort n randomly generated elements using Heapsort method
 
 #include <stdio.h>
 #include <stdlib.h>
-
-// function to swap two elements in an array
 void swap(int *a, int *b) {
     int temp = *a;
     *a = *b;
     *b = temp;
-}
 
-// function to heapify a subtree with root at given index in an array
 void heapify(int arr[], int n, int i) {
-    int largest = i;    // initialize largest as root
-    int l = 2 * i + 1;  // left child index
-    int r = 2 * i + 2;  // right child index
-
-    // if left child is larger than root
+    int largest = i;    
+    int l = 2 * i + 1;  
+    int r = 2 * i + 2;  
     if (l < n && arr[l] > arr[largest])
         largest = l;
-
-    // if right child is larger than largest so far
     if (r < n && arr[r] > arr[largest])
-        largest = r;
-
-    // if largest is not root
+        largest =r
     if (largest != i) {
         swap(&arr[i], &arr[largest]);
-
-        // recursively heapify the affected subtree
         heapify(arr, n, largest);
     }
 }
-
-// function to perform heapsort on an array
 void heapsort(int arr[], int n) {
-    // build heap (rearrange array)
     for (int i = n / 2 - 1; i >= 0; i--)
         heapify(arr, n, i);
-
-    // extract elements from heap one by one
     for (int i = n - 1; i > 0; i--) {
-        // move current root to end
         swap(&arr[0], &arr[i]);
-
-        // call max heapify on the reduced heap
         heapify(arr, i, 0);
     }
 }
@@ -55,29 +35,18 @@ int main() {
 
     printf("Enter the number of elements to sort: ");
     scanf("%d", &n);
-
-    // dynamically allocate memory for the array
     int *arr = (int*)malloc(n * sizeof(int));
-
-    // generate n random elements and store in the array
     printf("Generating %d random elements...\n", n);
     for (int i = 0; i < n; i++)
         arr[i] = rand() % 100;
-
     printf("Original array:\n");
     for (int i = 0; i < n; i++)
         printf("%d ", arr[i]);
-
-    // sort the array using heapsort
     heapsort(arr, n);
-
     printf("\nSorted array:\n");
     for (int i = 0; i < n; i++)
         printf("%d ", arr[i]);
-
-    // free the dynamically allocated memory
     free(arr);
-
     return 0;
 }
 
@@ -87,9 +56,7 @@ Q 2. Write a C program for the Implementation of Prim’s Minimum spanning tree 
 #include <stdlib.h>
 #include <limits.h>
 
-#define V 5  // number of vertices in the graph
-
-// function to find the vertex with minimum key value
+#define V 5  
 int minKey(int key[], int mstSet[]) {
     int min = INT_MAX, min_index;
 
@@ -103,38 +70,26 @@ int minKey(int key[], int mstSet[]) {
     return min_index;
 }
 
-// function to print the constructed MST
 void printMST(int parent[], int graph[V][V]) {
     printf("Edge \tWeight\n");
     for (int i = 1; i < V; i++)
         printf("%d - %d \t%d \n", parent[i], i, graph[i][parent[i]]);
 }
 
-// function to construct and print the MST using Prim's algorithm
-void primMST(int graph[V][V]) {
-    int parent[V];     // array to store the constructed MST
-    int key[V];        // key values used to pick minimum weight edge
-    int mstSet[V];     // set of vertices included in MST
 
-    // initialize all keys as INFINITE and mstSet[] as false
+void primMST(int graph[V][V]) {
+    int parent[V];     
+    int key[V];        
+    int mstSet[V];     
     for (int i = 0; i < V; i++) {
         key[i] = INT_MAX;
         mstSet[i] = 0;
     }
-
-    // always include first vertex in MST
     key[0] = 0;
     parent[0] = -1;
-
-    // construct MST for V-1 vertices
     for (int count = 0; count < V - 1; count++) {
-        // pick the minimum key vertex from the set of vertices not yet included in MST
         int u = minKey(key, mstSet);
-
-        // add the picked vertex to the MST set
         mstSet[u] = 1;
-
-        // update key values and parent index of adjacent vertices of the picked vertex
         for (int v = 0; v < V; v++) {
             if (graph[u][v] && !mstSet[v] && graph[u][v] < key[v]) {
                 parent[v] = u;
@@ -142,25 +97,20 @@ void primMST(int graph[V][V]) {
             }
         }
     }
-
-    // print the constructed MST
     printMST(parent, graph);
 }
 
 int main() {
-    // adjacency matrix representation of the graph
     int graph[V][V] = {{0, 2, 0, 6, 0},
                        {2, 0, 3, 8, 5},
                        {0, 3, 0, 0, 7},
                        {6, 8, 0, 0, 9},
                        {0, 5, 7, 9, 0}};
-
-    // construct and print the MST using Prim's algorithm
     primMST(graph);
-
     return 0;
 }
 OR
+
 Q 2. Write a C program that accepts the vertices and edges of a graph and store it as an adjacency
 matrix. Implement functions to print indegree of all vertices of graph. 
 
