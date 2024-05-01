@@ -2,54 +2,38 @@ Q 1. Write a C program that accepts the vertices and edges of a graph. Create ad
 
 #include <stdio.h>
 #include <stdlib.h>
-
 struct node {
   int vertex;
   struct node* next;
 };
 struct node* createNode(int);
-
 struct Graph {
   int numVertices;
   struct node** adjLists;
 };
-
-// Create a node
 struct node* createNode(int v) {
   struct node* newNode = malloc(sizeof(struct node));
   newNode->vertex = v;
   newNode->next = NULL;
   return newNode;
 }
-
-// Create a graph
 struct Graph* createAGraph(int vertices) {
   struct Graph* graph = malloc(sizeof(struct Graph));
   graph->numVertices = vertices;
-
   graph->adjLists = malloc(vertices * sizeof(struct node*));
-
   int i;
   for (i = 0; i < vertices; i++)
     graph->adjLists[i] = NULL;
-
   return graph;
 }
-
-// Add edge
 void addEdge(struct Graph* graph, int s, int d) {
-  // Add edge from s to d
   struct node* newNode = createNode(d);
   newNode->next = graph->adjLists[s];
   graph->adjLists[s] = newNode;
-
-  // Add edge from d to s
   newNode = createNode(s);
   newNode->next = graph->adjLists[d];
   graph->adjLists[d] = newNode;
 }
-
-// Print the graph
 void printGraph(struct Graph* graph) {
   int v;
   for (v = 0; v < graph->numVertices; v++) {
@@ -74,6 +58,7 @@ int main() {
 
   return 0;
 }
+
 Btree.c
 Q 2. Write a program which uses binary search tree library and counts the total nodes and
 totalleaf nodes in the tree.
@@ -132,9 +117,9 @@ else
                     break;
             case 6: exit(0);
             default: printf("\nInvalid Choice\n");
-        }//switch
-    }//while
-}//main
+        }
+    }
+}
 
 Btree.h
 #include<stdio.h>
@@ -147,7 +132,6 @@ struct bst
 }node;
  
 int cnt=0,leafcnt=0,nleafcnt=0;
-//creating a new node
 struct bst *create()
 {
     struct bst *temp=(struct bst*)malloc(sizeof(struct bst));
@@ -155,11 +139,8 @@ struct bst *create()
     temp->rchild=NULL;
     return temp;
 }
- 
-//inserting a above created node at proper position
 void insert(struct bst *r, struct bst *new1)
 {
-    //if new node is less than parent node
     if(new1->data < r->data)
     {
         if(r->lchild==NULL)
@@ -167,7 +148,6 @@ void insert(struct bst *r, struct bst *new1)
         else
             insert(r->lchild,new1);
     }
-    //if new node is greater than parent node
     if(new1->data > r->data)
     {
         if(r->rchild==NULL)
@@ -176,8 +156,6 @@ void insert(struct bst *r, struct bst *new1)
             insert(r->rchild,new1);
     }
 }
- 
-//to search an element in Binary Search Tree
 struct bst *search(struct bst *r, int key)
 {
     struct bst *temp;
@@ -193,8 +171,6 @@ struct bst *search(struct bst *r, int key)
     }
     return NULL;
 }
- 
-//to count total number of nodes
 int count(struct bst *temp)
 {
     if(temp!=NULL)
@@ -205,8 +181,6 @@ int count(struct bst *temp)
     }
     return cnt;
 }
- 
-//to count total number of leaf nodes
 int countleaf(struct bst *temp)
 {
     if(temp!=NULL)
@@ -218,8 +192,6 @@ int countleaf(struct bst *temp)
     }
     return leafcnt;
 }
- 
-//to count total number of non leaf nodes
 int countnleaf(struct bst *temp)
 {
     if(temp!=NULL)
