@@ -3,19 +3,13 @@ Q 1. Write a C program for the Implementation of Kruskal’s Minimum spanning tr
 
 #include<stdio.h>
 #include<stdlib.h>
-
-// Structure for Edge
 struct Edge {
     int src, dest, weight;
 };
-
-// Structure for Graph
 struct Graph {
     int V, E;
     struct Edge* edge;
 };
-
-// Create Graph
 struct Graph* createGraph(int V, int E) {
     struct Graph* graph = (struct Graph*) malloc(sizeof(struct Graph));
     graph->V = V;
@@ -23,29 +17,21 @@ struct Graph* createGraph(int V, int E) {
     graph->edge = (struct Edge*) malloc(sizeof(struct Edge) * E);
     return graph;
 }
-
-// Find parent of i using parent array
 int find(int parent[], int i) {
     if(parent[i] == -1)
         return i;
     return find(parent, parent[i]);
 }
-
-// Union of two subsets using Union by rank
 void Union(int parent[], int x, int y) {
     int xset = find(parent, x);
     int yset = find(parent, y);
     parent[xset] = yset;
 }
-
-// Compare two edges based on weight
 int compare(const void* a, const void* b) {
     struct Edge* a1 = (struct Edge*) a;
     struct Edge* b1 = (struct Edge*) b;
     return a1->weight - b1->weight;
 }
-
-// Implement Kruskal's Minimum Spanning Tree Algorithm
 void KruskalMST(struct Graph* graph) {
     int V = graph->V;
     struct Edge result[V];
@@ -68,8 +54,6 @@ void KruskalMST(struct Graph* graph) {
         printf("%d -- %d == %d\n", result[i].src, result[i].dest, result[i].weight);
     return;
 }
-
-// Main function
 int main() {
     int V, E, i;
     printf("Enter number of vertices and edges: ");
@@ -89,7 +73,6 @@ traversal.
 
 #include <stdio.h>
 #include <stdlib.h>
-
 #define MAX_SIZE 100
 
 int adj_matrix[MAX_SIZE][MAX_SIZE];
